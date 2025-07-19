@@ -5,6 +5,8 @@ import torchvision.transforms as transforms
 from PIL import Image
 
 # -----------------------------------------------
+# Encoder CNN using pre-trained ResNet
+# -----------------------------------------------
 class EncoderCNN(nn.Module):
     def __init__(self, embed_size):  # ✅ Make sure both 'self' and 'embed_size' are present
         super(EncoderCNN, self).__init__()
@@ -21,6 +23,11 @@ class EncoderCNN(nn.Module):
         features = self.linear(features)
         features = self.bn(features)
         return features
+
+
+# -----------------------------------------------
+# Decoder RNN (LSTM)
+# -----------------------------------------------
 class DecoderRNN(nn.Module):
     def __init__(self, embed_size, hidden_size, vocab_size, num_layers=1):
         super(DecoderRNN, self).__init__()
@@ -60,6 +67,9 @@ class DecoderRNN(nn.Module):
 
         sampled_ids = torch.stack(sampled_ids, 1)  # (1, max_len)
         return sampled_ids
+
+
+
 # -----------------------------------------------
 # Image preprocessing function
 # -----------------------------------------------
@@ -74,7 +84,7 @@ transform = transforms.Compose([
 # Example usage
 # -----------------------------------------------
 # You can replace this path with your own image
-image_path = r"C:\Users\sumit\OneDrive\Desktop\images (1).jpeg"
+image_path = r"C:\Users\sumit\OneDrive\Desktop\images.jpeg"
 image = Image.open(image_path).convert('RGB')
 image = transform(image).unsqueeze(0)  # add batch dimension
 
